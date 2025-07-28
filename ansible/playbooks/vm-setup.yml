@@ -1,0 +1,5 @@
+- name: Dummy playbook
+  hosts: localhost
+  tasks:
+    - name: Ping localhost
+      ping:

@@ -1,0 +1,35 @@
+name: Infra CI Checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.11
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Run terraform fmt
+        run: terraform fmt -check -recursive
+
+      - name: Run terraform validate
+        run: |
+          terraform -chdir=terraform/gcp init -backend=false
+          terraform -chdir=terraform/gcp validate
+
+      - name: Install ansible-lint
+        run: pip install ansible-lint
+
+      - name: Lint Ansible playbooks
+        run: ansible-lint ansible/playbooks/

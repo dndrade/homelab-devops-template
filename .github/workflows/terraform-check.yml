@@ -1,0 +1,33 @@
+name: Terraform Check
+
+on:
+  push:
+    paths:
+      - 'terraform/**'
+  pull_request:
+    paths:
+      - 'terraform/**'
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Check Terraform Format
+        run: terraform fmt -check -recursive
+
+      - name: Validate GCP Config
+        run: |
+          terraform -chdir=terraform/gcp init -backend=false
+          terraform -chdir=terraform/gcp validate
+
+      - name: Validate Cloudflare Config
+        run: |
+          terraform -chdir=terraform/cloudflare init -backend=false
+          terraform -chdir=terraform/cloudflare validate

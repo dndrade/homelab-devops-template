@@ -1,0 +1,46 @@
+# ─── General ────────────────────────────────────────
+.DS_Store
+*.swp
+*.swo
+*.log
+*.bak
+
+# ─── Env / Secrets ─────────────────────────────────
+.env
+.env.*
+!.env.example
+
+# ─── Terraform ─────────────────────────────────────
+*.tfstate
+*.tfstate.*
+.terraform/
+.crash/
+terraform.tfvars
+override.tf
+override.tf.json
+*.tfplan
+
+# ─── Ansible ───────────────────────────────────────
+*.retry
+*.vault
+*.secret
+*.pem
+.ssh/
+
+# ─── Python / Pip / Lint ───────────────────────────
+__pycache__/
+*.py[cod]
+.venv/
+.envrc
+
+# ─── VSCode / JetBrains / Editors ──────────────────
+.vscode/
+.idea/
+
+# ─── GitHub Actions secrets or temp ────────────────
+.github/secrets/
+.github/tmp/
+
+# ─── Backup Files ──────────────────────────────────
+*~
+*.tmp
