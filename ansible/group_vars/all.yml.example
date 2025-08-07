@@ -1,0 +1,19 @@
+# Root project path
+project_root: "{{ ansible_env.HOME }}/your-homelab-project"
+
+# Folder layout
+docker_root: "{{ project_root }}/docker"
+compose_root: "{{ project_root }}/docker-compose"
+
+services_root: "{{ docker_root }}/services"
+compose_services_root: "{{ compose_root }}/services"
+
+# Global metadata
+project_domain: "your-domain.com"
+project_timezone: "YOUR_TIMEZONE"  # e.g., "America/New_York"
+project_owner: "your-local-user"
+project_group: "docker"
+
+# Permissions
+default_dir_mode: "0755"
+default_file_mode: "0644"

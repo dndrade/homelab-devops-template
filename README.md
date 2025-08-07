@@ -34,18 +34,3 @@ You can adapt it for your own usage.
 
 All secrets and sensitive configs have been redacted.  
 Use `.env.example` as a guide.
-
-## Structure
-
-```text
-homelab-devops-template/
-├── terraform/
-│   ├── gcp/           # VM provisioning
-│   └── cloudflare/    # DNS & records
-├── ansible/
-│   ├── playbooks/     # Service setup
-│   └── inventory/     # Host targets (redacted)
-├── scripts/           # Bootstrap/setup scripts
-├── .github/workflows/ # CI config
-├── .env.example       # Placeholder secrets
-└── README.md

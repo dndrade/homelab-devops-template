@@ -3,10 +3,10 @@ name: Terraform Check
 on:
   push:
     paths:
-      - 'terraform/**'
+      - "terraform/**"
   pull_request:
     paths:
-      - 'terraform/**'
+      - "terraform/**"
 
 jobs:
   terraform:

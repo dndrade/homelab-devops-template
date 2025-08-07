@@ -1,0 +1,11 @@
+global:
+  scrape_interval: {{ prometheus_scrape_interval }}
+
+scrape_configs:
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:{{ prometheus_port }}']
+
+  - job_name: 'cadvisor'
+    static_configs:
+      - targets: ['cadvisor:{{ cadvisor_port }}']

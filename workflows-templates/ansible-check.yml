@@ -1,0 +1,49 @@
+name: Ansible Dry-Run Check
+
+on:
+  push:
+    paths:
+      - "ansible/**"
+      - ".github/workflows/ansible-check.yml"
+  pull_request:
+    paths:
+      - "ansible/**"
+
+jobs:
+  ansible-dry-run:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ansible
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Install Ansible and dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y python3-pip
+          pip3 install ansible ansible-lint
+
+      - name: Decrypt vault (if needed)
+        env:
+          ANSIBLE_VAULT_PASSWORD: ${{ secrets.ANSIBLE_VAULT_PASSWORD }}
+        run: |
+          echo "$ANSIBLE_VAULT_PASSWORD" > .vault_pass.txt
+
+      - name: Run Ansible playbook in check mode
+        run: |
+          ansible-playbook -i inventory/cloud.yml playbooks/site.yml \
+            --check \
+            --diff \
+            --vault-password-file .vault_pass.txt
+
+      - name: Clean up vault password file
+        if: always()
+        run: rm -f .vault_pass.txt

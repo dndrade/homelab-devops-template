@@ -1,0 +1,25 @@
+headscale_version: "0.26.1"
+
+# Inside container
+headscale_private_key_path: "/etc/headscale/noise_private.key"
+headscale_acl_path: "/etc/headscale/acl.json"
+headscale_db_path: "/var/lib/headscale/db.sqlite"
+
+# Host paths (user-controlled)
+headscale_host_key_path: "{{ headscale_service_dir }}/noise_private.key"
+headscale_host_acl_path: "{{ headscale_service_dir }}/acl.json"
+headscale_host_config_path: "{{ headscale_service_dir }}/config.yaml"
+
+# Domain configuration
+domain: "YOUR_DOMAIN"
+headscale_domain: "headscale.YOUR_DOMAIN"
+
+# WARNING: Do not include real API keys in public templates
+headscale_api_key: "HEADSCALE_API_KEY_PLACEHOLDER"
+
+# Directory structure
+headscale_service_dir: "{{ services_root }}/headscale"
+headscale_compose_dir: "{{ compose_root }}/headscale"
+headscale_data_dir: "{{ headscale_service_dir }}/data"
+headscale_env_path: "{{ headscale_compose_dir }}/.env"
+headscale_compose_file_path: "{{ headscale_compose

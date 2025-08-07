@@ -1,0 +1,15 @@
+ansible_user: your-ansible-user
+
+# Headscale config for GCP
+headscale_version: "0.26.1"
+
+# Inside container
+headscale_private_key_path: "/etc/headscale/noise_private.key"
+headscale_db_path: "/var/lib/headscale/db.sqlite"
+headscale_acl_path: "/etc/headscale/acl.json"
+
+# Host-side private key path
+headscale_key_file: "/path/to/host/noise_private.key"
+
+# Headscale domain
+headscale_domain: "headscale.YOUR_DOMAIN"

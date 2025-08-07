@@ -4,43 +4,60 @@
 *.swo
 *.log
 *.bak
+*.tmp
+*~
+*#
+.#*
 
 # ─── Env / Secrets ─────────────────────────────────
 .env
 .env.*
 !.env.example
+*.vault
+*.secret
+*.pem
+vault_pass.txt
+.ssh/
+.ansible-lint
+.github/secrets/
+.github/tmp/
+
+# ─── Ansible ───────────────────────────────────────
+*.retry
+.vagrant/
+roles/*/files/**
+roles/*/templates/**
 
 # ─── Terraform ─────────────────────────────────────
 *.tfstate
 *.tfstate.*
 .terraform/
-.crash/
 terraform.tfvars
+terraform.tfvars.json
 override.tf
 override.tf.json
 *.tfplan
-
-# ─── Ansible ───────────────────────────────────────
-*.retry
-*.vault
-*.secret
-*.pem
-.ssh/
+.crash/
+terraform/output.json
+terraform/.terraform.lock.hcl
 
 # ─── Python / Pip / Lint ───────────────────────────
 __pycache__/
 *.py[cod]
 .venv/
 .envrc
+.checkpoints/
+.pytest_cache/
 
 # ─── VSCode / JetBrains / Editors ──────────────────
 .vscode/
 .idea/
 
-# ─── GitHub Actions secrets or temp ────────────────
-.github/secrets/
-.github/tmp/
+# ─── Logs ──────────────────────────────────────────
+logs/
+*.out
+*.err
 
-# ─── Backup Files ──────────────────────────────────
-*~
-*.tmp
+# ─── System / OS ───────────────────────────────────
+Thumbs.db
+ehthumbs.db

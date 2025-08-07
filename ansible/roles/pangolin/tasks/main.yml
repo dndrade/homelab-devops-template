@@ -1,0 +1,94 @@
+- name: Create Pangolin directory structure
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: "0755"
+  loop:
+    - /home/ubuntu/pangolin
+    - /home/ubuntu/pangolin/config
+    - /home/ubuntu/pangolin/config/traefik
+    - /home/ubuntu/pangolin/config/letsencrypt
+
+- name: Create empty acme.json file with correct permissions
+  copy:
+    content: ""
+    dest: /home/ubuntu/pangolin/config/letsencrypt/acme.json
+    mode: "0600"
+
+- name: Template docker-compose.yml
+  template:
+    src: docker-compose.yml.j2
+    dest: /home/ubuntu/pangolin/docker-compose.yml
+  register: pangolin_compose_template
+
+- name: Template Pangolin config.yml
+  template:
+    src: config.yml.j2
+    dest: /home/ubuntu/pangolin/config/config.yml
+
+- name: Template Traefik static config
+  template:
+    src: traefik_config.yml.j2
+    dest: /home/ubuntu/pangolin/config/traefik/traefik_config.yml
+
+- name: Template Traefik dynamic config
+  template:
+    src: dynamic_config.yml.j2
+    dest: /home/ubuntu/pangolin/config/traefik/dynamic_config.yml
+
+- name: Check if Pangolin container is running
+  shell: docker ps --filter "name=pangolin" --filter "status=running" --format "{{'{{.Names}}'}}"
+  register: pangolin_running
+  changed_when: false
+
+- name: Check if Traefik container is running
+  shell: docker ps --filter "name=traefik" --filter "status=running" --format "{{'{{.Names}}'}}"
+  register: traefik_running
+  changed_when: false
+
+- name: Check if Gerbil container is running
+  shell: docker ps --filter "name=gerbil" --filter "status=running" --format "{{'{{.Names}}'}}"
+  register: gerbil_running
+  changed_when: false
+
+- name: Set fact if compose up is needed
+  set_fact:
+    pangolin_compose_needs_up: "{{ pangolin_compose_template.changed or (pangolin_running.stdout != 'pangolin') or (traefik_running.stdout != 'traefik') or (gerbil_running.stdout != 'gerbil') }}"
+
+- name: Remove conflicting containers if needed
+  shell: |
+    docker rm -f pangolin || true
+    docker rm -f traefik || true
+    docker rm -f gerbil || true
+  when: pangolin_compose_needs_up
+  ignore_errors: true
+
+- name: Ensure 'pangolin' Docker network exists
+  ansible.builtin.command: docker network create pangolin
+  args:
+    creates: /var/lib/docker/network/files/pangolin
+  register: pangolin_network
+  failed_when: false
+
+- name: Start Pangolin stack with Docker Compose
+  shell: |
+    cd /home/ubuntu/pangolin
+    docker compose up -d --force-recreate
+  when: pangolin_compose_needs_up
+  register: docker_compose_up
+  failed_when: docker_compose_up.rc != 0
+
+- name: Check Docker Compose service status
+  shell: |
+    cd /home/ubuntu/pangolin
+    docker compose ps
+  register: docker_compose_status
+
+- name: Display Docker Compose service status
+  debug:
+    msg: "{{ docker_compose_status.stdout_lines }}"
+
+- name: Show dashboard URL
+  debug:
+    msg: |
+      ✅ Pangolin is live at {{ pangolin_dashboard_url }}/auth/initial-setup

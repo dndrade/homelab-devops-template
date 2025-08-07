@@ -1,0 +1,79 @@
+- name: Ensure headscale service directory exists
+  file:
+    path: "{{ headscale_service_dir }}"
+    state: directory
+    recurse: true
+    owner: "{{ project_owner }}"
+    group: "{{ project_group }}"
+    mode: "{{ default_dir_mode }}"
+
+- name: Ensure headscale data directory exists
+  file:
+    path: "{{ headscale_data_dir }}"
+    state: directory
+    recurse: true
+    owner: "{{ project_owner }}"
+    group: "{{ project_group }}"
+    mode: "{{ default_dir_mode }}"
+
+- name: Ensure headscale compose directory exists
+  file:
+    path: "{{ headscale_compose_dir }}"
+    state: directory
+    recurse: true
+    owner: "{{ project_owner }}"
+    group: "{{ project_group }}"
+    mode: "{{ default_dir_mode }}"
+
+- name: Upload noise private key
+  copy:
+    src: noise_private.key
+    dest: "{{ headscale_host_key_path }}"
+    owner: "{{ project_owner }}"
+    group: "{{ project_group }}"
+    mode: "0600"
+  notify: Restart Headscale
+
+- name: Upload ACL file
+  copy:
+    src: acl.json
+    dest: "{{ headscale_host_acl_path }}"
+    owner: "{{ project_owner }}"
+    group: "{{ project_group }}"
+    mode: "0644"
+  notify: Restart Headscale
+
+- name: Upload headscale config.yaml
+  template:
+    src: headscale-config.yml.j2
+    dest: "{{ headscale_host_config_path }}"
+    owner: "{{ project_owner }}"
+    group: "{{ project_group }}"
+    mode: "0644"
+  notify: Restart Headscale
+
+- name: Upload headscale-admin .env
+  template:
+    src: headscale-admin.env.j2
+    dest: "{{ headscale_env_path }}"
+    owner: "{{ project_owner }}"
+    group: "{{ project_group }}"
+    mode: "0644"
+  notify: Restart Headscale
+
+- name: Upload docker-compose.yml
+  template:
+    src: docker-compose.yml.j2
+    dest: "{{ headscale_compose_file_path }}"
+    owner: "{{ project_owner }}"
+    group: "{{ project_group }}"
+    mode: "0644"
+  notify: Restart Headscale
+
+- name: Validate docker-compose.yml syntax
+  shell: docker compose config
+  args:
+    chdir: "{{ headscale_compose_dir }}"
+  register: dc_config
+  failed_when: dc_config.rc != 0
+  changed_when: false

@@ -1,0 +1,16 @@
+# Core domain info (still used in Traefik + dashboard URL)
+pangolin_base_domain: "{{ project_domain }}"
+
+# Used by Traefik routing + app dashboard
+pangolin_dashboard_url: "http://{{ ansible_host }}:3002"
+
+# This ensures the local VM instance will be reachable by IP:PORT (good for testing),
+# while not conflicting with your GCP domain version.
+pangolin_secret: "{{ vault_pangolin_secret }}"
+
+# Optional, but recommended defaults
+pangolin_log_level: "info"
+pangolin_cert_resolver: "letsencrypt"
+pangolin_cors_origin: "{{ pangolin_dashboard_url }}"
+pangolin_cors_credentials: false
+pangolin_gerbil_start_port: 51820

@@ -1,0 +1,4 @@
+- name: Restart Prometheus
+  shell: docker compose up -d --force-recreate
+  args:
+    chdir: "{{ compose_services_root }}/prometheus"

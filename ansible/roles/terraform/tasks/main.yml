@@ -1,0 +1,7 @@
+- name: Create terraform.tfvars.json from vault vars
+  template:
+    src: terraform.tfvars.json.j2
+    dest: "{{ project_root }}/terraform/terraform.tfvars.json"
+    mode: "0600"
+    owner: "{{ project_owner }}"
+    group: "{{ project_group }}"

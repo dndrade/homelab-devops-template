@@ -1,0 +1,29 @@
+- name: Create Dashy config directory
+  file:
+    path: "{{ dashy_service_dir }}/config"
+    state: directory
+    recurse: true
+    owner: "{{ project_owner }}"
+    group: "{{ project_group }}"
+    mode: "{{ default_dir_mode }}"
+
+- name: Upload Docker Compose for Dashy
+  template:
+    src: docker-compose.yml.j2
+    dest: "{{ dashy_compose_dir }}/docker-compose.yml"
+    owner: "{{ project_owner }}"
+    group: "{{ project_group }}"
+    mode: "{{ default_file_mode }}"
+
+- name: Copy Dashy config
+  copy:
+    src: conf.yml
+    dest: "{{ dashy_service_dir }}/conf.yml"
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Deploy Dashy
+  community.docker.docker_compose:
+    project_src: "{{ dashy_compose_dir }}"
+    state: present

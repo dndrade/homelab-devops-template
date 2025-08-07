@@ -1,0 +1,5 @@
+- name: Restart Headscale
+  community.docker.docker_compose:
+    project_src: "{{ headscale_compose_dir }}"
+    state: present
+    restarted: true

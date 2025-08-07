@@ -1,0 +1,25 @@
+# playbooks/docker-install.yml
+# Installs Docker and verifies basic operation
+
+- hosts: cloud
+  become: true
+
+  vars:
+    docker_users:
+      - YOUR_ANSIBLE_USERNAME
+
+  roles:
+    - docker
+
+  tasks:
+    - name: Verify Docker runs hello-world
+      command: docker run --rm hello-world
+      register: hello_output
+      changed_when: false
+      retries: 3
+      delay: 5
+      until: hello_output.rc == 0
+      ignore_errors: true
+
+    - debug:
+        var: hello_output.stdout

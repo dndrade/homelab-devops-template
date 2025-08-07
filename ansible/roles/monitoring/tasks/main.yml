@@ -1,0 +1,36 @@
+- name: Create Prometheus service and compose directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ project_owner }}"
+    group: "{{ project_group }}"
+    mode: "{{ default_dir_mode }}"
+  loop:
+    - "{{ services_root }}/prometheus"
+    - "{{ services_root }}/prometheus/data"
+    - "{{ compose_services_root }}/prometheus"
+
+- name: Upload Prometheus config
+  template:
+    src: prometheus.yml.j2
+    dest: "{{ services_root }}/prometheus/prometheus.yml"
+    owner: "{{ project_owner }}"
+    group: "{{ project_group }}"
+    mode: "{{ default_file_mode }}"
+  notify: Restart Prometheus
+
+- name: Upload docker-compose.yml
+  template:
+    src: docker-compose.yml.j2
+    dest: "{{ compose_services_root }}/prometheus/docker-compose.yml"
+    owner: "{{ project_owner }}"
+    group: "{{ project_group }}"
+    mode: "{{ default_file_mode }}"
+  notify: Restart Prometheus
+
+- name: Start Prometheus stack
+  shell: docker compose up -d --force-recreate
+  args:
+    chdir: "{{ compose_services_root }}/prometheus"
+  register: prometheus_up
+  failed_when: prometheus_up.rc != 0

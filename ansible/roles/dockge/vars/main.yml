@@ -1,0 +1,8 @@
+dockge_version: "latest"
+dockge_container_name: "dockge"
+dockge_config_dir: "/opt/dockge"
+dockge_data_dir: "/opt/dockge"
+dockge_port: 5001
+domain: "veilgate.com" # for the Traefik label
+dockge_service_dir: "{{ services_root }}/dockge"
+dockge_compose_dir: "{{ compose_services_root }}/dockge"

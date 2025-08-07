@@ -1,0 +1,6 @@
+dashy_image: "lissy93/dashy"
+dashy_container_name: "dashy"
+dashy_port: 8080
+
+dashy_service_dir: "{{ services_root }}/dashy"
+dashy_compose_dir: "{{ compose_services_root }}/dashy"

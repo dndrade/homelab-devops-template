@@ -1,0 +1,38 @@
+appConfig:
+  title: Veilgate Access Hub
+  subtitle: Security Layer Dashboard
+  theme: dark
+  layout: auto
+  iconSize: medium
+  language: en
+  startUrl: https://cloud.veilgate.com
+  showSplashScreen: false
+
+sections:
+  - name: Core Services
+    icon: 🧩
+    items:
+      - title: Headscale
+        description: Tailscale coordination server
+        icon: 🧠
+        url: https://headscale.veilgate.com
+      - title: Headscale UI
+        description: Web UI for Headscale
+        icon: 🧰
+        url: https://headscale.veilgate.com/admin
+      - title: Pangolin (Entry Portal)
+        description: Access point to all tunnels and services
+        icon: 🦡
+        url: https://pangolin.veilgate.com
+      - title: Traefik Dashboard
+        description: Reverse proxy manager
+        icon: ⚙️
+        url: https://traefik.veilgate.com/dashboard/
+      - title: Dockge
+        description: Compose stack manager
+        icon: 📦
+        url: https://dockge.veilgate.com
+      - title: Dashy (This Page)
+        description: Service hub UI
+        icon: 🗂️
+        url: https://cloud.veilgate.com

@@ -1,0 +1,14 @@
+# playbooks/site.yml
+# Full stack provisioning: OS setup + Docker installation + service deployment
+
+- name: Provision Homelab Gateway VM
+  hosts: cloud
+  become: true
+  roles:
+    - { role: common, tags: ["common"] } # timezone, updates, packages
+    - { role: docker, tags: ["docker"] } # docker engine + python libs
+    - { role: headscale, tags: ["headscale"] } # tailscale coordinator
+    - { role: pangolin, tags: ["pangolin"] } # gateway + traefik
+    - { role: dashy, tags: ["dashy"] } # dashboard UI
+    - { role: monitoring, tags: ["monitoring"] } # prometheus + grafana
+    # - { role: dockge,   tags: ['dockge'] }      # optional container manager UI

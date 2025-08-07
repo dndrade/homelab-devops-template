@@ -1,5 +1,12 @@
-- name: Dummy playbook
-  hosts: localhost
-  tasks:
-    - name: Ping localhost
-      ping:
+# playbooks/deploy-services.yml
+# Re-deploys all containerized services (no OS or Docker re-provisioning)
+
+- name: Re-deploy homelab services on RackNerd VM
+  hosts: cloud
+  become: true
+  roles:
+    - { role: headscale, tags: ["headscale"] }
+    - { role: pangolin, tags: ["pangolin"] }
+    - { role: dashy, tags: ["dashy"] }
+    - { role: monitoring, tags: ["monitoring"] }
+    # - { role: dockge,   tags: ['dockge'] }  # optional

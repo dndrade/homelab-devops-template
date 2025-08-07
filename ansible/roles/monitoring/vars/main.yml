@@ -1,0 +1,4 @@
+prometheus_scrape_interval: 15s
+prometheus_port: 9090
+grafana_port: 3000
+cadvisor_port: 8080

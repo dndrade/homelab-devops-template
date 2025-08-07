@@ -1,0 +1,28 @@
+{
+  "groups": {
+    "group:admins": ["admin@YOURDOMAIN"]
+  },
+  "tagOwners": {
+    "tag:SOME_TAG": ["group:admins"]
+  },
+  "acls": [
+    {
+      "action": "accept",
+      "src": ["admin@YOURDOMAIN"],
+      "dst": ["tag:SOME_TAG:*"]
+    },
+    {
+      "action": "accept",
+      "src": ["admin@YOURDOMAIN"],
+      "dst": ["admin@YOURDOMAIN:*"]
+    }
+  ],
+  "ssh": [
+    {
+      "action": "accept",
+      "src": ["admin@YOURDOMAIN"],
+      "dst": ["tag:SOME_TAG"],
+      "users": ["YOUR_SSH_USER"]
+    }
+  ]
+}
